@@ -6,7 +6,7 @@ const url = require('url');
 const PORT = 3000;
 
 const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true); // parse query params
+  const parsedUrl = url.parse(req.url, true); 
   const fileName = parsedUrl.query.name;
   const content = parsedUrl.query.content;
   const filePath = path.join(__dirname, 'files', fileName || '');
