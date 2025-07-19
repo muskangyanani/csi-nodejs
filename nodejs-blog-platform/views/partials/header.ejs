@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title + ' - ' : '' %>Blog Platform</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="<%= typeof description !== 'undefined' ? description : 'A modern blog platform for sharing your thoughts and stories' %>">
+    <meta name="keywords" content="<%= typeof keywords !== 'undefined' ? keywords : 'blog, platform, writing, stories' %>">
+    <meta name="author" content="Blog Platform">
+    
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'Blog Platform' %>">
+    <meta property="og:description" content="<%= typeof description !== 'undefined' ? description : 'A modern blog platform for sharing your thoughts and stories' %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= typeof url !== 'undefined' ? url : '' %>">
+    
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= typeof title !== 'undefined' ? title : 'Blog Platform' %>">
+    <meta name="twitter:description" content="<%= typeof description !== 'undefined' ? description : 'A modern blog platform for sharing your thoughts and stories' %>">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Additional head content -->
+    <% if (typeof additionalHead !== 'undefined') { %>
+        <%- additionalHead %>
+    <% } %>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">BlogPlatform</a>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/" class="<%= currentUrl === '/' ? 'active' : '' %>">Home</a></li>
+                    <li><a href="/blog" class="<%= currentUrl.startsWith('/blog') ? 'active' : '' %>">Blog</a></li>
+                    <li><a href="/about" class="<%= currentUrl === '/about' ? 'active' : '' %>">About</a></li>
+                    <li><a href="/contact" class="<%= currentUrl === '/contact' ? 'active' : '' %>">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="auth-links">
+                <% if (user) { %>
+                    <a href="/dashboard" class="btn btn-primary">Dashboard</a>
+                    <a href="/blog/create" class="btn btn-success">Write</a>
+                    <span class="user-greeting">Hello, <%= user.firstName %>!</span>
+                    <a href="/auth/logout" class="btn btn-outline">Logout</a>
+                <% } else { %>
+                    <a href="/auth/login" class="btn btn-primary">Login</a>
+                    <a href="/auth/register" class="btn btn-outline">Register</a>
+                <% } %>
+            </div>
+            
+            <!-- Mobile menu toggle -->
+            <button class="mobile-menu-toggle d-none">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Alert container -->
+    <div class="alert-container"></div>
+    
+    <main>

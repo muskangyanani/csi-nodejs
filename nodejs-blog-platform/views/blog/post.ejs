@@ -1,0 +1,80 @@
+%- include('partials/header', { title: post.title }) %
+
+section class="blog-post"
+    article class="card"
+        div class="card-header"
+            h1 class="card-title"  post.title h1
+            div class="card-meta"
+                By  strong  post.author.firstName  post.author.lastName  strong 
+                On  new Date(post.publishedAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }) 
+            div
+        div
+
+        div class="card-content"
+            p  post.content p
+
+            div class="post-stats"
+                span class="views"  post.views _ views _span
+                span class="read-time"  post.readTime _ min read _span
+            div
+
+             if (post.categories  post.categories.length  0)
+                div class="post-categories"
+                     post.categories.forEach(category)
+                        a href="/blog?category=  encodeURIComponent(category)"  class="filter-tag"  category a
+                    
+                div
+             
+
+             if (post.tags  post.tags.length  0)
+                div class="post-tags"
+                     post.tags.forEach(tag)
+                        a href="/blog?tag=  encodeURIComponent(tag)"  class="filter-tag"  tag a
+                    
+                div
+             
+        div
+    article
+
+     if (user) 
+        div class="comment-form"
+            form action="/blog/  post._id /comment" method="POST" id="comment-form"
+                div class="form-group"
+                    label for="comment-content" class="form-label" Comment label
+                    textarea name="content" id="comment-content" class="form-control" required
+                    textarea
+                div
+
+                button type="submit" class="btn btn-primary" Post Comment
+            form
+        div
+     
+
+
+ if (post.comments  post.comments.length  0)
+        section class="comments-section"
+            h2 Comments
+
+            div id="comments-list"
+                 post.comments.forEach(comment)
+                    div class="comment"
+                        div class="comment-header"
+                            span class="comment-author"  comment.author.firstName  comment.author.lastName span
+                            span class="comment-date"  new Date(comment.createdAt).toLocaleDateString() 
+                        
+
+                        div class="comment-content"  comment.content  div
+                    div
+                
+
+            div
+        section
+     
+
+section
+
+ include('partials/footer')

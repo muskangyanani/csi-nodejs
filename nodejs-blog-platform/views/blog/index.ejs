@@ -1,0 +1,91 @@
+%- include('partials/header', { title: 'Blog' }) %
+
+section class="search-form"
+    form action="/blog" method="GET"
+        input type="text" name="search" id="search-input" placeholder="Search posts..." class="form-control"
+        button type="submit" class="btn btn-primary"Searchbutton
+    form
+section
+
+section class="filters"
+     if (categories && categories.length > 0) { 
+        select name="category" id="category-select" class="form-control"
+            option value=""All Categoriesoption
+             categories.forEach(function(category) { 
+                option(value=" category ", selected=" selectedCategory == category ? 'selected' : '' ") category option
+             }) 
+        select
+     } 
+
+     if (tags && tags.length > 0) { 
+        select name="tag" id="tag-select" class="form-control"
+            option value=""All Tagsoption
+             tags.forEach(function(tag) { 
+                option(value=" tag ", selected=" selectedTag == tag ? 'selected' : '' ") tag option
+             }) 
+        select
+     } 
+
+     if (search) { 
+        p class="search-results"Showing results for:  strong search strongp
+     } 
+section
+
+section class="blog-posts"
+     if (posts && posts.length > 0) { 
+         posts.forEach(post) { 
+            article class="card"
+                div class="card-header"
+                    h3 class="card-title"
+                        a href="/blog/ post.slug " post.title a
+                    h3
+                    div class="card-meta"
+                        spanBy  strong post.author.firstName  post.author.lastName strong
+                         new Date(post.publishedAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }) 
+                    div
+                div
+
+                div class="card-content"
+                    p post.excerpt p
+
+                    div class="post-stats"
+                        span class="views" post.views _views_span
+                        span class="read-time" post.readTime _min read_span
+                    div
+
+                     if (post.categories && post.categories.length > 0) {
+                        div class="post-categories"
+                             post.categories.forEach(function(category) { 
+                                a href="/blog?category= encodeURIComponent(category)" class="filter-tag" category a
+                             }) 
+                        div
+                     } 
+
+                     if (post.tags && post.tags.length > 0) {
+                        div class="post-tags"
+                             post.tags.forEach(function(tag) { 
+                                a href="/blog?tag= encodeURIComponent(tag)" class="filter-tag" tag a
+                             }) 
+                        div
+                     } 
+                div
+            article
+         } 
+     } else { 
+        p class="text-center"No posts foundp
+     } 
+section
+
+ if (pagination && pagination.total > pagination.pages) { 
+    section class="pagination"
+        a href="/blog?page= pagination.current - 1 " class=" pagination.hasPrev ? '' : 'disabled' "Previous_a
+        span class="current page" pagination.current _of_ pagination.pages span
+        a href="/blog?page= pagination.current + 1 " class=" pagination.hasNext ? '' : 'disabled' "Next_a
+    section
+ } 
+
+ include('partials/footer')

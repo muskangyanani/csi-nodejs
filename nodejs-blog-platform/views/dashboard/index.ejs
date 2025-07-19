@@ -1,0 +1,104 @@
+%- include('partials/header', { title: 'Dashboard' }) %
+
+<section class="dashboard">
+    <div class="dashboard-container">
+        <h1>Dashboard</h1>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.totalPosts %></div>
+                <div class="stat-label">Total Posts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.publishedPosts %></div>
+                <div class="stat-label">Published Posts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.draftPosts %></div>
+                <div class="stat-label">Draft Posts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.totalViews %></div>
+                <div class="stat-label">Total Views</div>
+            </div>
+        </div>
+
+        <div class="my-posts">
+            <h2>Your Recent Posts</h2>
+
+            <% if (posts && posts.length > 0) { %>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Views</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% posts.forEach(function(post) { %>
+                                <tr>
+                                    <td><a href="/blog/<%= post.slug %>"><%= post.title %></a></td>
+                                    <td><span class="badge badge-<%= post.status %>"><%= post.status %></span></td>
+                                    <td><%= post.views %></td>
+                                    <td>
+                                        <a href="/blog/<%= post._id %>/edit" class="btn btn-secondary">Edit</a>
+                                        <form action="/blog/<%= post._id %>/delete" method="POST" style="display:inline-block;">
+                                            <button type="submit" class="btn btn-danger" data-confirm="delete" data-item-name="<%= post.title %>">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <p>No posts found. Why not <a href="/blog/create">create one?</a></p>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<section class="profile mt-5">
+    <div class="profile-container">
+        <h2>Your Profile</h2>
+
+        <% if (errors && errors.length > 0) { %>
+            <div class="alert alert-danger">
+                <ul>
+                    <% errors.forEach(function(error) { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
+        <form action="/dashboard/profile" method="POST">
+            <div class="form-group">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" name="firstName" id="firstName" class="form-control" required value="<%= user.firstName %>">
+            </div>
+
+            <div class="form-group">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" name="lastName" id="lastName" class="form-control" required value="<%= user.lastName %>">
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control" required value="<%= user.email %>">
+            </div>
+
+            <div class="form-group">
+                <label for="bio" class="form-label">Bio</label>
+                <textarea name="bio" id="bio" class="form-control"><%= user.bio %></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

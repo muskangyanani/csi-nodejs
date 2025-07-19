@@ -1,0 +1,102 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+    <h1>Welcome to Blog Platform</h1>
+    <p>Share your thoughts, stories, and ideas with the world</p>
+    <div class="hero-actions">
+        <% if (user) { %>
+            <a href="/blog/create" class="btn btn-primary">Start Writing</a>
+            <a href="/dashboard" class="btn btn-outline">My Dashboard</a>
+        <% } else { %>
+            <a href="/auth/register" class="btn btn-primary">Get Started</a>
+            <a href="/blog" class="btn btn-outline">Browse Posts</a>
+        <% } %>
+    </div>
+</section>
+
+<section class="recent-posts">
+    <h2>Latest Posts</h2>
+    
+    <% if (recentPosts && recentPosts.length > 0) { %>
+        <div class="grid grid-3">
+            <% recentPosts.forEach(post => { %>
+                <article class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <a href="/blog/<%= post.slug %>"><%= post.title %></a>
+                        </h3>
+                        <div class="card-meta">
+                            By <strong><%= post.author.firstName %> <%= post.author.lastName %></strong>
+                            on <%= new Date(post.publishedAt).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            }) %>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <p><%= post.excerpt %></p>
+                        
+                        <div class="post-stats">
+                            <span class="views"><%= post.views %> views</span>
+                            <span class="read-time"><%= post.readTime %> min read</span>
+                        </div>
+                        
+                        <% if (post.categories && post.categories.length > 0) { %>
+                            <div class="post-categories">
+                                <% post.categories.forEach(category => { %>
+                                    <a href="/blog?category=<%= encodeURIComponent(category) %>" class="filter-tag"><%= category %></a>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                    </div>
+                </article>
+            <% }) %>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="/blog" class="btn btn-primary">View All Posts</a>
+        </div>
+    <% } else { %>
+        <div class="text-center">
+            <p>No posts available yet. Be the first to share your story!</p>
+            <% if (user) { %>
+                <a href="/blog/create" class="btn btn-primary">Create Your First Post</a>
+            <% } else { %>
+                <a href="/auth/register" class="btn btn-primary">Join Us</a>
+            <% } %>
+        </div>
+    <% } %>
+</section>
+
+<% if (categories && categories.length > 0) { %>
+    <section class="categories-section">
+        <h2>Popular Categories</h2>
+        <div class="filters">
+            <% categories.forEach(category => { %>
+                <a href="/blog?category=<%= encodeURIComponent(category) %>" class="filter-tag"><%= category %></a>
+            <% }) %>
+        </div>
+    </section>
+<% } %>
+
+<section class="features">
+    <h2>Why Choose Our Platform?</h2>
+    <div class="grid grid-3">
+        <div class="feature-card">
+            <h3>Easy to Use</h3>
+            <p>Simple and intuitive interface for writing and managing your blog posts.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Responsive Design</h3>
+            <p>Your blog looks great on all devices - desktop, tablet, and mobile.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Rich Features</h3>
+            <p>Categories, tags, comments, search, and more to enhance your blogging experience.</p>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>
