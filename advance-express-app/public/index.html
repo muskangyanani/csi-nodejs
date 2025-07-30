@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Express.js Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h3 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card ul {
+            list-style: none;
+        }
+        
+        .feature-card li {
+            color: #555;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .feature-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .api-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .api-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .endpoint h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .get { background: #28a745; color: white; }
+        .post { background: #007bff; color: white; }
+        .delete { background: #dc3545; color: white; }
+        
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .upload-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Advanced Express.js Application</h1>
+            <p>Featuring file upload, API integration, and advanced error handling</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>📁 File Upload</h3>
+                <p>Advanced file upload capabilities with image processing</p>
+                <ul>
+                    <li>Multi-file upload support</li>
+                    <li>Image processing with Sharp</li>
+                    <li>Automatic thumbnail generation</li>
+                    <li>File type validation</li>
+                    <li>Size limits and security</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🌐 API Integration</h3>
+                <p>Third-party API integration with caching and error handling</p>
+                <ul>
+                    <li>Weather API integration</li>
+                    <li>News API integration</li>
+                    <li>Response caching</li>
+                    <li>Rate limiting</li>
+                    <li>Error handling</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🛡️ Security & Error Handling</h3>
+                <p>Production-ready security and error handling</p>
+                <ul>
+                    <li>Helmet security headers</li>
+                    <li>CORS configuration</li>
+                    <li>Input validation</li>
+                    <li>Global error handling</li>
+                    <li>Request logging</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="api-section">
+            <h2>📖 API Endpoints</h2>
+            
+            <div class="endpoint">
+                <h4><span class="method get">GET</span> <span class="url">/health</span></h4>
+                <p>Check application health status</p>
+            </div>
+            
+            <div class="endpoint">
+                <h4><span class="method post">POST</span> <span class="url">/api/upload/single</span></h4>
+                <p>Upload a single file with optional image processing</p>
+            </div>
+            
+            <div class="endpoint">
+                <h4><span class="method post">POST</span> <span class="url">/api/upload/multiple</span></h4>
+                <p>Upload multiple files at once</p>
+            </div>
+            
+            <div class="endpoint">
+                <h4><span class="method get">GET</span> <span class="url">/api/weather/:city</span></h4>
+                <p>Get current weather for a specific city</p>
+            </div>
+            
+            <div class="endpoint">
+                <h4><span class="method get">GET</span> <span class="url">/api/news</span></h4>
+                <p>Get latest news headlines</p>
+            </div>
+            
+            <div class="endpoint">
+                <h4><span class="method get">GET</span> <span class="url">/api/news/:category</span></h4>
+                <p>Get news by category (business, technology, sports, etc.)</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🧪 Test File Upload</h2>
+            
+            <form class="upload-form" id="uploadForm">
+                <div class="form-group">
+                    <label for="fileInput">Select File(s):</label>
+                    <input type="file" id="fileInput" name="file" multiple accept="image/*,.pdf">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Optional file description"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category">
+                        <option value="">Select category</option>
+                        <option value="image">Image</option>
+                        <option value="document">Document</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn">Upload File(s)</button>
+            </form>
+            
+            <div id="result" class="result"></div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput');
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (fileInput.files.length === 0) {
+                showResult('Please select at least one file', 'error');
+                return;
+            }
+            
+            // Add files to FormData
+            if (fileInput.files.length === 1) {
+                formData.append('file', fileInput.files[0]);
+            } else {
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    formData.append('files', fileInput.files[i]);
+                }
+            }
+            
+            // Add metadata
+            if (description) formData.append('description', description);
+            if (category) formData.append('category', category);
+            
+            try {
+                const endpoint = fileInput.files.length === 1 ? '/api/upload/single' : '/api/upload/multiple';
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResult(`Upload successful! ${result.message}`, 'success');
+                    console.log('Upload result:', result);
+                } else {
+                    showResult(`Upload failed: ${result.error.message}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Upload error: ${error.message}`, 'error');
+            }
+        });
+        
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                resultDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
